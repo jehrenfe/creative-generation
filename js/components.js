@@ -31,7 +31,7 @@ const FOOTER_HTML = `
     <a href="friends.html">Friends</a>
   </div>
   <div>&copy; 2026 Creative Generation &middot; All rights reserved</div>
-  <div class="footer-copy">&copy; 2026 Creative Generation &middot; All rights reserved</div>
+  <div class="footer-copy">&copy; 2026 Creative Generation &middot; All rights reserved &middot; <a href="/admin/" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:11px;">✦ admin</a></div>
 </footer>`;
 
 document.addEventListener('DOMContentLoaded', () => {
