@@ -4,7 +4,7 @@ author: Xenia
 image: /uploads/a409a814-3829-47f8-abb8-b353202d3e45.png
 date: 2026-04-22T17:14:00.000-04:00
 ---
-When you are bored sometimes you just feel stuck. So in this article I am going to tell you 15 things wich you can use whenever you want but esspecially when are bored
+When you are bored sometimes you just feel stuck. So in this article I am going to tell you 15 things wich you can use whenever you want but especially when are bored
 
 1. DRAW
 2. WRITE
