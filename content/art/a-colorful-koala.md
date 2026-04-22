@@ -1,6 +1,6 @@
 ---
 title: A colorful koala
 author: Xenia
-image: /uploads/da86ed44-45b0-496f-b649-690afa8d6551.jpeg
+image: /uploads/screenshot-2026-04-22-at-5.36.21 pm.png
 date: 2026-04-22T17:33:00.000-04:00
 ---
