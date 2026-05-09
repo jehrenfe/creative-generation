@@ -1,66 +1,48 @@
-# Creative Generation — Setup Guide
-## Connecting Google Docs (free, no credit card, 5 minutes)
+# Creative Generation — Cloudflare Pages Setup
+
+## After deploying to Cloudflare Pages, do these two steps:
 
 ---
 
-## STEP 1 — Create the Google Doc
+## STEP 1 — Create a GitHub Personal Access Token
 
-1. Go to docs.google.com (in your daughter's Google account)
-2. Click "+ Blank" to create a new doc
-3. Click the title at the top and name it: Creative Generation Content
-4. Add works using this format — one work per line:
-
-   Title | Description | Author | Category | DriveLink
-
-   Example lines:
-   My Dragon Drawing | A friendly dragon in the clouds | Xenia | Art | https://drive.google.com/file/d/ABC/view
-   The Ocean Book | All about the deep sea | Martina | Books | https://drive.google.com/file/d/XYZ/view
-   Why I Love Science | Science is everywhere! | Lili | Articles | https://drive.google.com/file/d/DEF/view
-
-   Rules:
-   - Each work goes on its own line
-   - Use | to separate each part (hold Shift and press backslash \)
-   - Category must be exactly: Art, Books, or Articles
-   - Lines starting with # are ignored (use for notes to yourself)
+1. Go to github.com → click your profile photo → Settings
+2. Scroll to the bottom → click "Developer settings"
+3. Click "Personal access tokens" → "Tokens (classic)"
+4. Click "Generate new token (classic)"
+5. Name it: Creative Generation
+6. Set expiration: No expiration
+7. Check the box: "repo" (full control of repositories)
+8. Click "Generate token"
+9. COPY THE TOKEN — you won't see it again!
 
 ---
 
-## STEP 2 — Share the doc
+## STEP 2 — Add Environment Variables in Cloudflare
 
-1. Click "Share" (top right corner)
-2. Click "Change to anyone with the link"
-3. Make sure it says "Viewer"
-4. Click "Done"
-5. Click "Share" again → "Copy link"
-6. Paste that link here so we can add it to the website!
+1. Go to Cloudflare → Workers & Pages → your project
+2. Click "Settings" → "Environment variables"
+3. Add these two variables:
 
----
+   GITHUB_TOKEN = (paste your token from Step 1)
+   GITHUB_REPO  = yourgithubusername/creative-generation
 
-## STEP 3 — Add a file link from Google Drive
-
-For each work, you need a link to the actual file:
-
-1. Upload the file (drawing, PDF, etc.) to Google Drive
-2. Right-click the file → "Share" → "Change to anyone with the link" → "Viewer"
-3. Click "Copy link"
-4. Paste it as the last part of the line in the Google Doc
+4. Click Save
+5. Go to "Deployments" → redeploy
 
 ---
 
-## HOW TO ADD NEW CONTENT LATER
+## That's it! The admin panel is now fully working.
 
-Just open the Google Doc and add a new line:
-  Title | Description | Author | Category | DriveLink
+Crew members log in at: creativegeneration.kids/admin
 
-Save the doc — it appears on the website within seconds!
+Default passwords (change these!):
+- xenia / creative2024
+- lulu / creative2024
+- martina / creative2024
+- lili / creative2024
+- theo / creative2024
+- melody / creative2024
+- admin / cgadmin2024
 
-To remove something, just delete its line from the doc.
-
----
-
-## CATEGORY OPTIONS
-
-Must be spelled exactly (capital first letter):
-- Art
-- Books  
-- Articles
+To change passwords, edit the CREW object in /admin/index.html

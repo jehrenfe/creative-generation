@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Publish — Creative Generation</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:sans-serif; background:#FFF8F0; min-height:100vh; }
+    header { background:linear-gradient(135deg,#FF6B6B,#FF9A5C,#FFD166); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+    .header-logo { color:white; font-weight:700; font-size:16px; }
+    .header-user { color:rgba(255,255,255,0.9); font-size:13px; display:flex; align-items:center; gap:12px; }
+    .logout-btn { color:rgba(255,255,255,0.8); font-size:12px; cursor:pointer; text-decoration:underline; }
+    .logout-btn:hover { color:white; }
+    .container { max-width:680px; margin:0 auto; padding:32px 24px; }
+    h2 { font-size:22px; font-weight:700; color:#2C1810; margin-bottom:24px; }
+    .tabs { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+    .tab { padding:8px 20px; border-radius:24px; font-size:13px; font-weight:600; cursor:pointer; border:1.5px solid #FFD0A0; background:white; color:#A07060; transition:all 0.15s; }
+    .tab.active { background:linear-gradient(135deg,#FF6B6B,#FF9A5C); color:white; border-color:transparent; }
+    .form-section { display:none; background:white; border-radius:16px; padding:28px; border:1px solid rgba(255,154,92,0.2); }
+    .form-section.active { display:block; }
+    label { display:block; font-size:11px; font-weight:600; color:#A07060; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; margin-top:18px; }
+    label:first-child { margin-top:0; }
+    input[type=text], input[type=file], select, textarea { width:100%; padding:10px 14px; border-radius:10px; border:1.5px solid #FFD0A0; font-size:14px; color:#2C1810; outline:none; font-family:sans-serif; background:#FFFAF5; }
+    input:focus, textarea:focus, select:focus { border-color:#FF9A5C; }
+    textarea { height:200px; resize:vertical; line-height:1.6; }
+    .img-preview { width:100%; height:200px; border-radius:10px; background:#FFF0DC; border:1.5px dashed #FFD0A0; display:flex; align-items:center; justify-content:center; margin-top:8px; overflow:hidden; cursor:pointer; }
+    .img-preview img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
+    .img-preview span { color:#A07060; font-size:13px; }
+    .publish-btn { width:100%; margin-top:24px; background:linear-gradient(135deg,#FF6B6B,#FF9A5C); color:white; border:none; padding:14px; border-radius:24px; font-size:15px; font-weight:600; cursor:pointer; font-family:sans-serif; transition:transform 0.15s; }
+    .publish-btn:hover { transform:translateY(-2px); }
+    .publish-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+    .success { display:none; text-align:center; padding:32px; }
+    .success h3 { font-size:22px; color:#2C1810; margin-bottom:8px; }
+    .success p { color:#A07060; font-size:14px; margin-bottom:20px; }
+    .success button { background:linear-gradient(135deg,#FF6B6B,#FF9A5C); color:white; border:none; padding:10px 24px; border-radius:24px; font-size:13px; font-weight:600; cursor:pointer; }
+    .note { font-size:12px; color:#A07060; margin-top:6px; line-height:1.5; }
+    .view-link { display:inline-block; margin-top:16px; color:#FF9A5C; font-size:13px; font-weight:600; text-decoration:none; }
+    .view-link:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">✦ Creative Generation Admin</div>
+  <div class="header-user">
+    <span id="welcome-msg"></span>
+    <span class="logout-btn" onclick="logout()">Log out</span>
+  </div>
+</header>
+
+<div class="container">
+  <h2>What are you publishing today?</h2>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('art')">🎨 Art</div>
+    <div class="tab" onclick="switchTab('articles')">✍️ Article</div>
+    <div class="tab" onclick="switchTab('books')">📚 Book</div>
+  </div>
+
+  <!-- ART FORM -->
+  <div class="form-section active" id="form-art">
+    <div id="success-art" class="success">
+      <div style="font-size:48px;margin-bottom:16px;">🎨</div>
+      <h3>Your art is live!</h3>
+      <p>It will appear on the website within a minute.</p>
+      <button onclick="resetForm('art')">Publish another</button>
+      <br><a href="/art.html" class="view-link">View the Art gallery →</a>
+    </div>
+    <div id="fields-art">
+      <label>Title of your artwork</label>
+      <input type="text" id="art-title" placeholder="e.g. Sunset over the ocean"/>
+      <label>Description (optional)</label>
+      <input type="text" id="art-desc" placeholder="A few words about your piece"/>
+      <label>Upload your image</label>
+      <div class="img-preview" id="art-preview" onclick="document.getElementById('art-file').click()">
+        <span>Tap to choose a photo</span>
+      </div>
+      <input type="file" id="art-file" accept="image/*" style="display:none" onchange="previewImage(this,'art-preview')"/>
+      <p class="note">Supported: JPG, PNG, GIF. Max size: 10MB.</p>
+      <button class="publish-btn" onclick="publish('art')">Publish artwork ✦</button>
+    </div>
+  </div>
+
+  <!-- ARTICLE FORM -->
+  <div class="form-section" id="form-articles">
+    <div id="success-articles" class="success">
+      <div style="font-size:48px;margin-bottom:16px;">✍️</div>
+      <h3>Your article is live!</h3>
+      <p>It will appear on the website within a minute.</p>
+      <button onclick="resetForm('articles')">Write another</button>
+      <br><a href="/articles.html" class="view-link">View Articles →</a>
+    </div>
+    <div id="fields-articles">
+      <label>Title</label>
+      <input type="text" id="articles-title" placeholder="e.g. Why I love the ocean"/>
+      <label>Short description</label>
+      <input type="text" id="articles-desc" placeholder="One sentence about your article"/>
+      <label>Write your article</label>
+      <textarea id="articles-body" placeholder="Start writing here...&#10;&#10;You can use blank lines to create new paragraphs."></textarea>
+      <button class="publish-btn" onclick="publish('articles')">Publish article ✦</button>
+    </div>
+  </div>
+
+  <!-- BOOKS FORM -->
+  <div class="form-section" id="form-books">
+    <div id="success-books" class="success">
+      <div style="font-size:48px;margin-bottom:16px;">📚</div>
+      <h3>Your book is live!</h3>
+      <p>It will appear on the website within a minute.</p>
+      <button onclick="resetForm('books')">Add another</button>
+      <br><a href="/ebooks.html" class="view-link">View Books →</a>
+    </div>
+    <div id="fields-books">
+      <label>Title</label>
+      <input type="text" id="books-title" placeholder="e.g. The Guide to Dragons"/>
+      <label>Short description</label>
+      <input type="text" id="books-desc" placeholder="What's the book about?"/>
+      <label>Cover image (optional)</label>
+      <div class="img-preview" id="books-preview" onclick="document.getElementById('books-file').click()">
+        <span>Tap to choose a cover image</span>
+      </div>
+      <input type="file" id="books-file" accept="image/*" style="display:none" onchange="previewImage(this,'books-preview')"/>
+      <label>Book link (Google Drive PDF link)</label>
+      <input type="text" id="books-link" placeholder="https://drive.google.com/..."/>
+      <p class="note">Upload your PDF to Google Drive, share it as "Anyone with link can view", then paste the link above.</p>
+      <button class="publish-btn" onclick="publish('books')">Publish book ✦</button>
+    </div>
+  </div>
+
+  <a href="/" class="view-link" style="display:block;margin-top:24px;">← Back to website</a>
+</div>
+
+<script>
+  // Check login
+  const user = sessionStorage.getItem('cg-user');
+  if (!user) window.location.href = '/admin/';
+  document.getElementById('welcome-msg').textContent = 'Hi, ' + user.charAt(0).toUpperCase() + user.slice(1) + '!';
+
+  function logout() {
+    sessionStorage.removeItem('cg-user');
+    window.location.href = '/admin/';
+  }
+
+  function switchTab(type) {
+    document.querySelectorAll('.tab').forEach((t,i) => {
+      t.classList.toggle('active', ['art','articles','books'][i] === type);
+    });
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('form-' + type).classList.add('active');
+  }
+
+  function previewImage(input, previewId) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const preview = document.getElementById(previewId);
+      preview.innerHTML = `<img src="${e.target.result}" />`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function resetForm(type) {
+    document.getElementById('success-' + type).style.display = 'none';
+    document.getElementById('fields-' + type).style.display = 'block';
+    // Clear inputs
+    document.querySelectorAll('#form-' + type + ' input[type=text], #form-' + type + ' textarea').forEach(el => el.value = '');
+    const preview = document.getElementById(type + '-preview');
+    if (preview) preview.innerHTML = '<span>Tap to choose a photo</span>';
+  }
+
+  async function publish(type) {
+    const title = document.getElementById(type + '-title')?.value.trim();
+    if (!title) { alert('Please add a title!'); return; }
+
+    const btn = document.querySelector('#form-' + type + ' .publish-btn');
+    btn.disabled = true;
+    btn.textContent = 'Publishing...';
+
+    try {
+      // Convert image to base64 if present
+      let imageData = null;
+      const fileInput = document.getElementById(type + '-file');
+      if (fileInput && fileInput.files[0]) {
+        imageData = await toBase64(fileInput.files[0]);
+      }
+
+      const payload = {
+        type,
+        title,
+        author: user,
+        description: document.getElementById(type + '-desc')?.value.trim() || '',
+        body: document.getElementById(type + '-body')?.value.trim() || '',
+        link: document.getElementById(type + '-link')?.value.trim() || '',
+        image: imageData,
+        date: new Date().toISOString(),
+      };
+
+      const res = await fetch('/api/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      document.getElementById('fields-' + type).style.display = 'none';
+      document.getElementById('success-' + type).style.display = 'block';
+
+    } catch (err) {
+      alert('Something went wrong: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = 'Publish ✦';
+    }
+  }
+
+  function toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+</script>
+</body>
+</html>

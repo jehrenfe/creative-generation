@@ -35,14 +35,14 @@ function buildArtCard(data) {
       ${data.description?`<div class="card-desc">${data.description}</div>`:''}
       ${data.author?`<div class="card-author">by ${data.author}</div>`:''}
     </div>
-    <span class="card-tag tag-art">Art</span>
+    <span class="card-tag tag-art" style="margin:0 16px 14px;">Art</span>
   </div>`;
 }
 
 function buildArticleCard(data, filename) {
   const thumb = data.image||'';
-  const thumbHTML = thumb ? `<div class="card-thumb" style="background-image:url('${thumb}')"></div>` : `<div class="card-thumb card-thumb-placeholder"></div>`;
-  return `<a href="reader.html?src=articles/${filename}" class="card card-article" style="text-decoration:none;display:block;">
+  const thumbHTML = thumb?`<div class="card-thumb" style="background-image:url('${thumb}')"></div>`:`<div class="card-thumb card-thumb-placeholder"></div>`;
+  return `<a href="/reader.html?src=articles/${filename}" class="card card-article" style="text-decoration:none;display:block;">
     ${thumbHTML}
     <div class="card-name">${data.title||'Untitled'}</div>
     ${data.description?`<div class="card-desc">${data.description}</div>`:''}
@@ -53,9 +53,9 @@ function buildArticleCard(data, filename) {
 
 function buildBookCard(data) {
   const thumb = data.image||'';
-  const thumbHTML = thumb ? `<div class="card-thumb" style="background-image:url('${thumb}')"></div>` : `<div class="card-thumb card-thumb-placeholder"></div>`;
+  const thumbHTML = thumb?`<div class="card-thumb" style="background-image:url('${thumb}')"></div>`:`<div class="card-thumb card-thumb-placeholder"></div>`;
   const href = data.file||'#';
-  const target = data.file ? 'target="_blank" rel="noopener"' : '';
+  const target = data.file?'target="_blank" rel="noopener"':'';
   return `<a href="${href}" ${target} class="card card-ebook" style="text-decoration:none;display:block;">
     ${thumbHTML}
     <div class="card-name">${data.title||'Untitled'}</div>
@@ -106,19 +106,57 @@ async function loadContent({ containerId, type, limit=null }) {
     if (!res.ok) throw new Error('none');
     let files = await res.json();
     if (!files.length) { container.innerHTML = emptyState('No works published yet — check back soon!'); return; }
-    files = files.sort((a,b) => new Date(b.date)-new Date(a.date));
-    if (limit) files = files.slice(0, limit);
+    files = files.sort((a,b)=>new Date(b.date)-new Date(a.date));
+    if (limit) files = files.slice(0,limit);
     const cards = await Promise.all(files.map(async file => {
       const r = await fetch(`/content/${type}/${file.filename}`);
       if (!r.ok) return '';
-      const { data } = parseFrontmatter(await r.text());
+      const {data} = parseFrontmatter(await r.text());
       if (type==='art')      return buildArtCard(data);
       if (type==='articles') return buildArticleCard(data, file.filename);
       if (type==='books')    return buildBookCard(data);
       return '';
     }));
-    const gridClass = type==='art' ? 'art-grid' : 'cards-grid';
+    const gridClass = type==='art'?'art-grid':'cards-grid';
     container.innerHTML = `<div class="${gridClass}">${cards.join('')}</div>`;
+  } catch { container.innerHTML = emptyState('No works published yet — check back soon!'); }
+}
+
+async function loadAllContent({ containerId, limit=6 }) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = `<div class="drive-loading">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="display:block;margin:0 auto 12px">
+      <circle cx="20" cy="20" r="16" stroke="#FF9A5C" stroke-width="3" stroke-dasharray="80" stroke-dashoffset="60">
+        <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="1s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+    <p style="color:var(--mid);font-size:14px;">Loading...</p>
+  </div>`;
+  try {
+    const types = ['art','articles','books'];
+    let allItems = [];
+    for (const type of types) {
+      try {
+        const res = await fetch(`/content/${type}/index.json`);
+        if (!res.ok) continue;
+        const files = await res.json();
+        for (const file of files) allItems.push({type,file});
+      } catch { continue; }
+    }
+    if (!allItems.length) { container.innerHTML = emptyState('No works published yet — check back soon!'); return; }
+    allItems.sort((a,b)=>new Date(b.file.date)-new Date(a.file.date));
+    if (limit) allItems = allItems.slice(0,limit);
+    const cards = await Promise.all(allItems.map(async ({type,file}) => {
+      const r = await fetch(`/content/${type}/${file.filename}`);
+      if (!r.ok) return '';
+      const {data} = parseFrontmatter(await r.text());
+      if (type==='art')      return buildArtCard(data);
+      if (type==='articles') return buildArticleCard(data,file.filename);
+      if (type==='books')    return buildBookCard(data);
+      return '';
+    }));
+    container.innerHTML = `<div class="cards-grid">${cards.join('')}</div>`;
   } catch { container.innerHTML = emptyState('No works published yet — check back soon!'); }
 }
 
@@ -129,15 +167,16 @@ async function loadArticle({ containerId, src }) {
   try {
     const res = await fetch(`/content/${src}`);
     if (!res.ok) throw new Error('not found');
-    const { data, body } = parseFrontmatter(await res.text());
+    const {data,body} = parseFrontmatter(await res.text());
     container.innerHTML = `<div class="article-body">${mdToHtml(body)}</div>`;
     const titleEl  = document.getElementById('reader-title');
     const authorEl = document.getElementById('reader-author');
-    if (titleEl)  titleEl.textContent = data.title || 'Article';
+    if (titleEl)  titleEl.textContent = data.title||'Article';
     if (authorEl && data.author) authorEl.innerHTML = `by <span>${data.author}</span>`;
-    document.title = (data.title||'Article') + ' — Creative Generation';
+    document.title = (data.title||'Article')+' — Creative Generation';
   } catch { container.innerHTML = '<p style="color:var(--mid)">Could not load article.</p>'; }
 }
 
-window.loadContent = loadContent;
-window.loadArticle = loadArticle;
+window.loadContent    = loadContent;
+window.loadAllContent = loadAllContent;
+window.loadArticle    = loadArticle;
