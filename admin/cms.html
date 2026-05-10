@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Publish — Creative Generation</title>
+  <title>Publish — The Creative Generation</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:sans-serif; background:#FFF8F0; min-height:100vh; }
@@ -11,7 +11,6 @@
     .header-logo { color:white; font-weight:700; font-size:16px; }
     .header-user { color:rgba(255,255,255,0.9); font-size:13px; display:flex; align-items:center; gap:12px; }
     .logout-btn { color:rgba(255,255,255,0.8); font-size:12px; cursor:pointer; text-decoration:underline; }
-    .logout-btn:hover { color:white; }
     .container { max-width:680px; margin:0 auto; padding:32px 24px; }
     h2 { font-size:22px; font-weight:700; color:#2C1810; margin-bottom:24px; }
     .tabs { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
@@ -25,7 +24,7 @@
     input:focus, textarea:focus, select:focus { border-color:#FF9A5C; }
     textarea { height:200px; resize:vertical; line-height:1.6; }
     .img-preview { width:100%; height:200px; border-radius:10px; background:#FFF0DC; border:1.5px dashed #FFD0A0; display:flex; align-items:center; justify-content:center; margin-top:8px; overflow:hidden; cursor:pointer; }
-    .img-preview img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
+    .img-preview img { width:100%; height:100%; object-fit:cover; }
     .img-preview span { color:#A07060; font-size:13px; }
     .publish-btn { width:100%; margin-top:24px; background:linear-gradient(135deg,#FF6B6B,#FF9A5C); color:white; border:none; padding:14px; border-radius:24px; font-size:15px; font-weight:600; cursor:pointer; font-family:sans-serif; transition:transform 0.15s; }
     .publish-btn:hover { transform:translateY(-2px); }
@@ -35,14 +34,14 @@
     .success p { color:#A07060; font-size:14px; margin-bottom:20px; }
     .success button { background:linear-gradient(135deg,#FF6B6B,#FF9A5C); color:white; border:none; padding:10px 24px; border-radius:24px; font-size:13px; font-weight:600; cursor:pointer; }
     .note { font-size:12px; color:#A07060; margin-top:6px; line-height:1.5; }
-    .view-link { display:inline-block; margin-top:16px; color:#FF9A5C; font-size:13px; font-weight:600; text-decoration:none; }
-    .view-link:hover { text-decoration:underline; }
+    .back-link { display:inline-block; margin-top:20px; color:#FF9A5C; font-size:13px; font-weight:600; }
+    .back-link:hover { text-decoration:underline; }
+    .view-link { display:inline-block; margin-top:12px; color:#FF9A5C; font-size:13px; }
   </style>
 </head>
 <body>
-
 <header>
-  <div class="header-logo">✦ Creative Generation Admin</div>
+  <div class="header-logo">✦ The Creative Generation</div>
   <div class="header-user">
     <span id="welcome-msg"></span>
     <span class="logout-btn" onclick="logout()">Log out</span>
@@ -51,24 +50,23 @@
 
 <div class="container">
   <h2>What are you publishing today?</h2>
-
   <div class="tabs">
     <div class="tab active" onclick="switchTab('art')">🎨 Art</div>
     <div class="tab" onclick="switchTab('articles')">✍️ Article</div>
     <div class="tab" onclick="switchTab('books')">📚 Book</div>
   </div>
 
-  <!-- ART FORM -->
+  <!-- ART -->
   <div class="form-section active" id="form-art">
     <div id="success-art" class="success">
       <div style="font-size:48px;margin-bottom:16px;">🎨</div>
       <h3>Your art is live!</h3>
-      <p>It will appear on the website within a minute.</p>
+      <p>It will appear on the website in about 30 seconds.</p>
       <button onclick="resetForm('art')">Publish another</button>
       <br><a href="/art.html" class="view-link">View the Art gallery →</a>
     </div>
     <div id="fields-art">
-      <label>Title of your artwork</label>
+      <label>Title</label>
       <input type="text" id="art-title" placeholder="e.g. Sunset over the ocean"/>
       <label>Description (optional)</label>
       <input type="text" id="art-desc" placeholder="A few words about your piece"/>
@@ -77,17 +75,17 @@
         <span>Tap to choose a photo</span>
       </div>
       <input type="file" id="art-file" accept="image/*" style="display:none" onchange="previewImage(this,'art-preview')"/>
-      <p class="note">Supported: JPG, PNG, GIF. Max size: 10MB.</p>
+      <p class="note">Supported: JPG, PNG, GIF.</p>
       <button class="publish-btn" onclick="publish('art')">Publish artwork ✦</button>
     </div>
   </div>
 
-  <!-- ARTICLE FORM -->
+  <!-- ARTICLES -->
   <div class="form-section" id="form-articles">
     <div id="success-articles" class="success">
       <div style="font-size:48px;margin-bottom:16px;">✍️</div>
       <h3>Your article is live!</h3>
-      <p>It will appear on the website within a minute.</p>
+      <p>It will appear on the website in about 30 seconds.</p>
       <button onclick="resetForm('articles')">Write another</button>
       <br><a href="/articles.html" class="view-link">View Articles →</a>
     </div>
@@ -97,17 +95,17 @@
       <label>Short description</label>
       <input type="text" id="articles-desc" placeholder="One sentence about your article"/>
       <label>Write your article</label>
-      <textarea id="articles-body" placeholder="Start writing here...&#10;&#10;You can use blank lines to create new paragraphs."></textarea>
+      <textarea id="articles-body" placeholder="Start writing here...&#10;&#10;Use blank lines to create new paragraphs."></textarea>
       <button class="publish-btn" onclick="publish('articles')">Publish article ✦</button>
     </div>
   </div>
 
-  <!-- BOOKS FORM -->
+  <!-- BOOKS -->
   <div class="form-section" id="form-books">
     <div id="success-books" class="success">
       <div style="font-size:48px;margin-bottom:16px;">📚</div>
       <h3>Your book is live!</h3>
-      <p>It will appear on the website within a minute.</p>
+      <p>It will appear on the website in about 30 seconds.</p>
       <button onclick="resetForm('books')">Add another</button>
       <br><a href="/ebooks.html" class="view-link">View Books →</a>
     </div>
@@ -121,31 +119,29 @@
         <span>Tap to choose a cover image</span>
       </div>
       <input type="file" id="books-file" accept="image/*" style="display:none" onchange="previewImage(this,'books-preview')"/>
-      <label>Book link (Google Drive PDF link)</label>
+      <label>Book link (Google Drive PDF)</label>
       <input type="text" id="books-link" placeholder="https://drive.google.com/..."/>
-      <p class="note">Upload your PDF to Google Drive, share it as "Anyone with link can view", then paste the link above.</p>
+      <p class="note">Upload PDF to Google Drive → Share → "Anyone with link" → paste link above.</p>
       <button class="publish-btn" onclick="publish('books')">Publish book ✦</button>
     </div>
   </div>
 
-  <a href="/" class="view-link" style="display:block;margin-top:24px;">← Back to website</a>
+  <a href="/" class="back-link">← Back to website</a>
 </div>
 
 <script>
-  // Check login
+  // ── CONFIG ──
+  const GITHUB_REPO  = 'jehrenfe/creative-generation';
+  const GITHUB_TOKEN = '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'; // ← paste token here
+
+  // ── Auth ──
   const user = sessionStorage.getItem('cg-user');
   if (!user) window.location.href = '/admin/';
   document.getElementById('welcome-msg').textContent = 'Hi, ' + user.charAt(0).toUpperCase() + user.slice(1) + '!';
-
-  function logout() {
-    sessionStorage.removeItem('cg-user');
-    window.location.href = '/admin/';
-  }
+  function logout() { sessionStorage.removeItem('cg-user'); window.location.href = '/admin/'; }
 
   function switchTab(type) {
-    document.querySelectorAll('.tab').forEach((t,i) => {
-      t.classList.toggle('active', ['art','articles','books'][i] === type);
-    });
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['art','articles','books'][i] === type));
     document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
     document.getElementById('form-' + type).classList.add('active');
   }
@@ -154,74 +150,102 @@
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = e => {
-      const preview = document.getElementById(previewId);
-      preview.innerHTML = `<img src="${e.target.result}" />`;
-    };
+    reader.onload = e => { document.getElementById(previewId).innerHTML = `<img src="${e.target.result}"/>`; };
     reader.readAsDataURL(file);
   }
 
   function resetForm(type) {
     document.getElementById('success-' + type).style.display = 'none';
     document.getElementById('fields-' + type).style.display = 'block';
-    // Clear inputs
     document.querySelectorAll('#form-' + type + ' input[type=text], #form-' + type + ' textarea').forEach(el => el.value = '');
-    const preview = document.getElementById(type + '-preview');
-    if (preview) preview.innerHTML = '<span>Tap to choose a photo</span>';
+    const p = document.getElementById(type + '-preview');
+    if (p) p.innerHTML = '<span>Tap to choose a photo</span>';
+  }
+
+  function toBase64(file) {
+    return new Promise((res,rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+  }
+
+  async function githubGet(path) {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/${path}`, {
+      headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}`, 'User-Agent': 'CreativeGeneration' }
+    });
+    if (!res.ok) return null;
+    return res.json();
+  }
+
+  async function githubPut(path, message, content, sha) {
+    const body = { message, content };
+    if (sha) body.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}`, 'Content-Type': 'application/json', 'User-Agent': 'CreativeGeneration' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error(`GitHub error ${res.status}: ${await res.text()}`);
+    return res.json();
+  }
+
+  function toB64(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+  async function updateIndex(type, filename, date) {
+    const data = await githubGet(`contents/content/${type}/index.json`);
+    let index = [];
+    let sha = null;
+    if (data) { sha = data.sha; index = JSON.parse(atob(data.content.replace(/\n/g,''))); }
+    index.unshift({ filename, date });
+    await githubPut(`content/${type}/index.json`, `Update ${type} index`, toB64(JSON.stringify(index, null, 2)), sha);
   }
 
   async function publish(type) {
     const title = document.getElementById(type + '-title')?.value.trim();
     if (!title) { alert('Please add a title!'); return; }
-
     const btn = document.querySelector('#form-' + type + ' .publish-btn');
-    btn.disabled = true;
-    btn.textContent = 'Publishing...';
+    btn.disabled = true; btn.textContent = 'Publishing...';
 
     try {
-      // Convert image to base64 if present
-      let imageData = null;
+      const date  = new Date().toISOString();
+      const slug  = title.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').slice(0,50) + '-' + Date.now();
+      const filename = slug + '.md';
+      const desc  = document.getElementById(type + '-desc')?.value.trim() || '';
+      const body  = document.getElementById(type + '-body')?.value.trim() || '';
+      const link  = document.getElementById(type + '-link')?.value.trim() || '';
+
+      // Upload image if present
+      let imageUrl = '';
       const fileInput = document.getElementById(type + '-file');
       if (fileInput && fileInput.files[0]) {
-        imageData = await toBase64(fileInput.files[0]);
+        const file = fileInput.files[0];
+        const ext  = file.name.split('.').pop();
+        const imgPath = `uploads/${slug}.${ext}`;
+        const b64  = (await toBase64(file)).split(',')[1];
+        await githubPut(imgPath, `Upload image: ${title}`, b64, null);
+        imageUrl = `/${imgPath}`;
       }
 
-      const payload = {
-        type,
-        title,
-        author: user,
-        description: document.getElementById(type + '-desc')?.value.trim() || '',
-        body: document.getElementById(type + '-body')?.value.trim() || '',
-        link: document.getElementById(type + '-link')?.value.trim() || '',
-        image: imageData,
-        date: new Date().toISOString(),
-      };
+      // Build markdown
+      const lines = ['---', `title: "${title.replace(/"/g,'\\"')}"`, `author: "${user}"`, `description: "${desc.replace(/"/g,'\\"')}"`];
+      if (imageUrl) lines.push(`image: "${imageUrl}"`);
+      if (link) lines.push(`file: "${link}"`);
+      lines.push(`date: "${date}"`, '---');
+      const md = body ? lines.join('\n') + '\n\n' + body : lines.join('\n');
 
-      const res = await fetch('/api/publish', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      // Save markdown file
+      await githubPut(`content/${type}/${filename}`, `Publish ${type}: ${title} by ${user}`, toB64(md), null);
 
-      if (!res.ok) throw new Error(await res.text());
+      // Update index
+      await updateIndex(type, filename, date);
 
+      // Show success
       document.getElementById('fields-' + type).style.display = 'none';
       document.getElementById('success-' + type).style.display = 'block';
 
-    } catch (err) {
+    } catch(err) {
       alert('Something went wrong: ' + err.message);
+    } finally {
       btn.disabled = false;
       btn.textContent = 'Publish ✦';
     }
-  }
-
-  function toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
   }
 </script>
 </body>

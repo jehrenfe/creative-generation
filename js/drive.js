@@ -173,7 +173,7 @@ async function loadArticle({ containerId, src }) {
     const authorEl = document.getElementById('reader-author');
     if (titleEl)  titleEl.textContent = data.title||'Article';
     if (authorEl && data.author) authorEl.innerHTML = `by <span>${data.author}</span>`;
-    document.title = (data.title||'Article')+' — Creative Generation';
+    document.title = (data.title||'Article')+' — The Creative Generation';
   } catch { container.innerHTML = '<p style="color:var(--mid)">Could not load article.</p>'; }
 }
 
