@@ -6,7 +6,7 @@ const NAV_HTML = `
       <path d="M14 4 L15.8 10.5 L22 8.5 L17.5 13.5 L22.5 16.5 L16 15.8 L14.5 22 L12.5 15.8 L6 16.5 L11 13.5 L6.5 8.5 L13 10.5 Z" fill="white" opacity="0.9"/>
       <path d="M14 10 Q17.5 14 14 22 Q10.5 14 14 10Z" fill="rgba(255,220,100,0.85)"/>
     </svg>
-    Creative Generation
+    the creative generation
   </div>
   <ul class="nav-links">
     <li><a href="/index.html">Home</a></li>
@@ -32,9 +32,9 @@ const FOOTER_HTML = `
     <svg width="14" height="14" viewBox="0 0 14 14" style="display:inline-block;vertical-align:middle;margin:0 3px">
       <path d="M7 12 Q3 9 2 6 Q1 3 4 2.5 Q5.5 2 7 4 Q8.5 2 10 2.5 Q13 3 12 6 Q11 9 7 12Z" fill="#FFD166"/>
     </svg>
-    by <strong>Creative Generation</strong>
+    by <strong>the creative generation</strong>
   </div>
-  <div class="footer-copy">&copy; 2026 Creative Generation &middot; All rights reserved &middot; <a href="/admin/" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:11px;">✦ admin</a></div>
+  <div class="footer-copy">&copy; 2026 the creative generation &middot; All rights reserved &middot; <a href="/admin/" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:11px;">✦ admin</a></div>
 </footer>`;
 
 document.addEventListener('DOMContentLoaded', () => {
